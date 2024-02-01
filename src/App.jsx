@@ -1,3 +1,4 @@
+import GameBoard from "./components/GameBoard";
 import Player from "./components/Player";
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
                     {/* Thus, we we click on edit button against a player, it opens up an input box only for that specific player */}
                     <Player initialName="Player 2" symbol="0"/>
                 </ol>
-                Game board
+                <GameBoard />
             </div>
         </main>
     );
