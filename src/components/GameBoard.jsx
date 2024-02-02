@@ -6,10 +6,13 @@ const initialGameBoard = [
     [null, null, null],
 ];
 
-export default function GameBoard() {
+export default function GameBoard({onSelectSquare, activePlayerSymbol}) {
     const [gameBoard, setGameBoard] = useState(initialGameBoard);
 
-    function handleUpdate(rowIndex, colIndex) {
+    function handleSelectSquare(rowIndex, colIndex) {
+        // Handle the player turn switch logic in the parent
+        onSelectSquare();
+
         // We have to update the game board while making sure not to lose the previous state.
         setGameBoard((previousGameBoard) => {
             /**
@@ -18,16 +21,16 @@ export default function GameBoard() {
              * This is because if we directly update the state object (previousGameBoard) here, then we will cause the old value in memory to update even before this scheduled state update  is executed by React.
              */
             const updatedBoard = [...previousGameBoard.map((innerArray) => [...innerArray])];
-            updatedBoard[rowIndex][colIndex] = 'X';
+            updatedBoard[rowIndex][colIndex] = activePlayerSymbol;
             return updatedBoard;
-        })
+        });
     }
     return (
         <ol id="game-board">
             {gameBoard.map((row, rowIndex) => <li key={rowIndex}>
                 <ol>
                     {row.map((playerSymbol, colIndex) => <li key={colIndex}>
-                        <button onClick={() => handleUpdate(rowIndex, colIndex)}>{playerSymbol}</button>
+                        <button onClick={() => handleSelectSquare(rowIndex, colIndex)}>{playerSymbol}</button>
                     </li>)}
                 </ol>
             </li>)}
