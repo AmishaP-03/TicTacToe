@@ -39,12 +39,11 @@ export default function GameBoard({onSelectSquare, turns}) {
         // Thus gameboard is a derived state here, value computed from some other state
         // AIM: MANAGE AS LESS STATES AS POSSIBLE. REUSE EXISTING STATES TO THE MAX POSSIBLE EXTENT
         gameBoard[row][col] = player;
-        console.log(gameBoard);
     }
 
     return (
         <ol id="game-board">
-            {gameBoard.map((row, rowIndex) => <li key={rowIndex}>
+            {gameBoard.map((row, rowIndex) => <li key={rowIndex}> {/* Good practice to add a key while outputting a dynamic list */}
                 <ol>
                     {row.map((playerSymbol, colIndex) => <li key={colIndex}>
                         {/* <button onClick={() => handleSelectSquare(rowIndex, colIndex)}>{playerSymbol}</button> */}

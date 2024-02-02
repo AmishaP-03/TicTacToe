@@ -1,6 +1,7 @@
 import { useState } from "react";
 import GameBoard from "./components/GameBoard";
 import Player from "./components/Player";
+import Log from "./components/Log";
 
 function App() {
     // Player with symbol X is the default active player
@@ -43,6 +44,7 @@ function App() {
                 {/* <GameBoard onSelectSquare={handleSelectSquare} activePlayerSymbol={activePlayer}/> */}
                 <GameBoard onSelectSquare={handleSelectSquare} turns={gameTurns}/>
             </div>
+            <Log turns={gameTurns}/>
         </main>
     );
 }
