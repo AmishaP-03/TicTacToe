@@ -35,7 +35,8 @@ function App() {
     const activePlayer = deriveActivePlayer(gameTurns);
 
     // Build the game board from turns prop
-    let gameBoard = initialGameBoard;
+    // let gameBoard = initialGameBoard; // creating a shallow copy. Will create a problem when we try to reset the board after a match is finished
+    let gameBoard = [...initialGameBoard.map((innerArray) => [...innerArray])]; // Creating a deep copy of initialGameBoard to make sure it remains unchanged and can be used while resetting the board.
 
     for (const turn of gameTurns) {
         // Object destructuring, should have the same name as defined in turn object
@@ -46,6 +47,9 @@ function App() {
         // Thus gameboard is a derived state here, value computed from some other state
         // AIM: MANAGE AS LESS STATES AS POSSIBLE. REUSE EXISTING STATES TO THE MAX POSSIBLE EXTENT
         gameBoard[row][col] = player;
+
+        // The above update to gameBoard will also make changes to initialGameBoard because arrays are objects and hence are reference values in JS.
+        // Both these variables point to the same location in memory. Hence to keep initialGameBoard unaffected, we should create its shallow copy and use it for modifications.
     }
 
     // App component will be re-excuted after every button select. So, we will check for winner after each turn directly, over here.
@@ -79,6 +83,12 @@ function App() {
             return updatedTurns;
         });
     }
+
+    function handleGameRestart() {
+        // gameTurns is the single source of truth for this complete application. Hence, to restart the game, we must reset it to []
+        setGameTurns([]);
+    }
+
     return (
         <main>
             <div id="game-container">
@@ -90,7 +100,7 @@ function App() {
                     {/* Thus, we we click on edit button against a player, it opens up an input box only for that specific player */}
                     <Player initialName="Player 2" symbol="0" isActive={activePlayer === 'O'}/>
                 </ol>
-                {(winner || hasDraw) && <GameOver winner={winner} />}
+                {(winner || hasDraw) && <GameOver winner={winner} onRestart={handleGameRestart}/>}
                 {/* <GameBoard onSelectSquare={handleSelectSquare} activePlayerSymbol={activePlayer}/> */}
                 <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard}/>
             </div>
