@@ -2,6 +2,13 @@ import { useState } from "react";
 import GameBoard from "./components/GameBoard";
 import Player from "./components/Player";
 import Log from "./components/Log";
+import { WINNING_COMBINATIONS } from "./winning-combinations";
+
+const initialGameBoard = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+];
 
 /**
  * Not dependent on any of the variables inside App component function neither needs to be re-defined every time the component is re-initialised
@@ -25,6 +32,32 @@ function App() {
     // No need to maintain a separate state to manage active player. Instead it can be derived from gameTurns state itself
     // Player with symbol X is the default active player
     const activePlayer = deriveActivePlayer(gameTurns);
+
+    // Build the game board from turns prop
+    let gameBoard = initialGameBoard;
+
+    for (const turn of gameTurns) {
+        // Object destructuring, should have the same name as defined in turn object
+        const {square, player} = turn;
+        const {row, col} = square;
+
+        // We need not manage any other state here to update the game board
+        // Thus gameboard is a derived state here, value computed from some other state
+        // AIM: MANAGE AS LESS STATES AS POSSIBLE. REUSE EXISTING STATES TO THE MAX POSSIBLE EXTENT
+        gameBoard[row][col] = player;
+    }
+
+    // App component will be re-excuted after every button select. So, we will check for winner after each turn directly, over here.
+    let winner = undefined;
+    for (const combinations of WINNING_COMBINATIONS) {
+        const firstSquareSymbol = gameBoard[combinations[0].row][combinations[0].column];
+        const secondSquareSymbol = gameBoard[combinations[1].row][combinations[1].column];
+        const thirdSquareSymbol = gameBoard[combinations[2].row][combinations[2].column];
+
+        if (firstSquareSymbol && firstSquareSymbol === secondSquareSymbol && firstSquareSymbol === thirdSquareSymbol) {
+            winner = firstSquareSymbol;
+        }
+    }
 
     // Switch turns when a square is selected
     function handleSelectSquare(rowIndex, colIndex) {
@@ -54,8 +87,9 @@ function App() {
                     {/* Thus, we we click on edit button against a player, it opens up an input box only for that specific player */}
                     <Player initialName="Player 2" symbol="0" isActive={activePlayer === 'O'}/>
                 </ol>
+                {winner && <p>You won {winner}!</p>}
                 {/* <GameBoard onSelectSquare={handleSelectSquare} activePlayerSymbol={activePlayer}/> */}
-                <GameBoard onSelectSquare={handleSelectSquare} turns={gameTurns}/>
+                <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard}/>
             </div>
             <Log turns={gameTurns}/>
         </main>

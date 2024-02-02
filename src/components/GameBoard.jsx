@@ -1,11 +1,8 @@
-const initialGameBoard = [
-    [null, null, null],
-    [null, null, null],
-    [null, null, null],
-];
-
 // export default function GameBoard({onSelectSquare, activePlayerSymbol}) {
-export default function GameBoard({onSelectSquare, turns}) {
+// export default function GameBoard({onSelectSquare, turns}) {
+
+// Transfer the gameBoard computation to App component so that it can be re-used to determine winner
+export default function GameBoard({onSelectSquare, board}) {
     // LIFTING THIS STATE UP TO THE APP COMPONENT SO THAT IS CAN BE REUSED BY LOG COMPONENT AS WELL
 
     // const [gameBoard, setGameBoard] = useState(initialGameBoard);
@@ -27,23 +24,25 @@ export default function GameBoard({onSelectSquare, turns}) {
     //     });
     // }
 
-    // Build the game board from turns prop
-    let gameBoard = initialGameBoard;
+    // SHIFTED TO APP COMPONENT:
 
-    for (const turn of turns) {
-        // Object destructuring, should have the same name as defined in turn object
-        const {square, player} = turn;
-        const {row, col} = square;
+    // // Build the game board from turns prop
+    // let gameBoard = initialGameBoard;
 
-        // We need not manage any other state here to update the game board
-        // Thus gameboard is a derived state here, value computed from some other state
-        // AIM: MANAGE AS LESS STATES AS POSSIBLE. REUSE EXISTING STATES TO THE MAX POSSIBLE EXTENT
-        gameBoard[row][col] = player;
-    }
+    // for (const turn of turns) {
+    //     // Object destructuring, should have the same name as defined in turn object
+    //     const {square, player} = turn;
+    //     const {row, col} = square;
+
+    //     // We need not manage any other state here to update the game board
+    //     // Thus gameboard is a derived state here, value computed from some other state
+    //     // AIM: MANAGE AS LESS STATES AS POSSIBLE. REUSE EXISTING STATES TO THE MAX POSSIBLE EXTENT
+    //     gameBoard[row][col] = player;
+    // }
 
     return (
         <ol id="game-board">
-            {gameBoard.map((row, rowIndex) => <li key={rowIndex}> {/* Good practice to add a key while outputting a dynamic list */}
+            {board.map((row, rowIndex) => <li key={rowIndex}> {/* Good practice to add a key while outputting a dynamic list */}
                 <ol>
                     {row.map((playerSymbol, colIndex) => <li key={colIndex}>
                         {/* <button onClick={() => handleSelectSquare(rowIndex, colIndex)}>{playerSymbol}</button> */}
