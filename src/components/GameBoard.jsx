@@ -47,7 +47,8 @@ export default function GameBoard({onSelectSquare, turns}) {
                 <ol>
                     {row.map((playerSymbol, colIndex) => <li key={colIndex}>
                         {/* <button onClick={() => handleSelectSquare(rowIndex, colIndex)}>{playerSymbol}</button> */}
-                        <button onClick={() => onSelectSquare(rowIndex, colIndex)}>{playerSymbol}</button>
+                        <button onClick={() => onSelectSquare(rowIndex, colIndex)} disabled={playerSymbol !== null}>{playerSymbol}</button>
+                        {/* If the playerSymbol is X or O, it means that the button was selected before */}
                     </li>)}
                 </ol>
             </li>)}
