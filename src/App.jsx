@@ -1,5 +1,6 @@
 import { useState } from "react";
 import GameBoard from "./components/GameBoard";
+import GameOver from "./components/GameOver";
 import Player from "./components/Player";
 import Log from "./components/Log";
 import { WINNING_COMBINATIONS } from "./winning-combinations";
@@ -59,6 +60,8 @@ function App() {
         }
     }
 
+    const hasDraw = gameTurns.length === 9 && !winner;
+
     // Switch turns when a square is selected
     function handleSelectSquare(rowIndex, colIndex) {
         // setActivePlayer((currentActivePlayer) => currentActivePlayer === 'X' ? 'O' : 'X'); NOT REQUIRED ANYMORE
@@ -87,7 +90,7 @@ function App() {
                     {/* Thus, we we click on edit button against a player, it opens up an input box only for that specific player */}
                     <Player initialName="Player 2" symbol="0" isActive={activePlayer === 'O'}/>
                 </ol>
-                {winner && <p>You won {winner}!</p>}
+                {(winner || hasDraw) && <GameOver winner={winner} />}
                 {/* <GameBoard onSelectSquare={handleSelectSquare} activePlayerSymbol={activePlayer}/> */}
                 <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard}/>
             </div>
