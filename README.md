@@ -4,7 +4,7 @@ Game features:
 1. Dual player game
 2. Edit/save players' names
 3. Display game logs
-4. At the end of each game: a) Display the winner's name or state if the game is a draw, b) Provide an option to restart the game and c) Game board should be reset upon each restart
+4. At the end of each game: a) Display the winner's name or state if the game ended in a draw, b) Provide an option to restart the game and c) Reset the game board upon each restart
 
 New game:
 ![image](https://github.com/AmishaP-03/TicTacToe/assets/154746893/50ca410a-fed9-4a3d-ae59-8bf4af4c9e3b)
@@ -14,7 +14,7 @@ Setting players' names:
 ![image](https://github.com/AmishaP-03/TicTacToe/assets/154746893/3b85daf4-ec21-4a31-9372-858be73f75c3)
 
 
-Game in progress, display of game logs below the game board:
+Game in progress, display of logs below the board:
 ![image](https://github.com/AmishaP-03/TicTacToe/assets/154746893/f33c2560-2b4b-4157-93e5-7cf360e4042d)
 
 
