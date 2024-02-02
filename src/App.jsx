@@ -23,6 +23,12 @@ function deriveActivePlayer(gameTurns) {
 }
 
 function App() {
+    // Store the player info as it is not logical to lift state from Player component to App component
+    const [players, setPlayers] = useState({
+        'X': 'Player 1',
+        'Y': 'Player 2'
+    });
+
     // Game turns info (array of objects, each object will contain information like: a) the row and column indices of the square selected b) the player symbol which selected that square)
     const [gameTurns, setGameTurns] = useState([]);
 
@@ -60,7 +66,7 @@ function App() {
         const thirdSquareSymbol = gameBoard[combinations[2].row][combinations[2].column];
 
         if (firstSquareSymbol && firstSquareSymbol === secondSquareSymbol && firstSquareSymbol === thirdSquareSymbol) {
-            winner = firstSquareSymbol;
+            winner = players[firstSquareSymbol];
         }
     }
 
@@ -89,16 +95,25 @@ function App() {
         setGameTurns([]);
     }
 
+    function handlePlayerNameChange(symbol, newName) {
+        setPlayers((currentPlayers) => {
+            return {
+                ...currentPlayers,
+                [symbol]: newName
+            }
+        });
+    }
+
     return (
         <main>
             <div id="game-container">
                 <ol id="players" className="highlight-player">
                     {/* A very powerful feature of React - build super complex reusable components which do not interfere with each other: */}
                     {/* React creates one isolated instance of component Player */}
-                    <Player initialName="Player 1" symbol="X" isActive={activePlayer === 'X'}/>
+                    <Player initialName="Player 1" symbol="X" isActive={activePlayer === 'X'} onNameChange={handlePlayerNameChange}/>
                     {/* React creates another isolated instance of component Player */}
                     {/* Thus, we we click on edit button against a player, it opens up an input box only for that specific player */}
-                    <Player initialName="Player 2" symbol="0" isActive={activePlayer === 'O'}/>
+                    <Player initialName="Player 2" symbol="0" isActive={activePlayer === 'O'} onNameChange={handlePlayerNameChange}/>
                 </ol>
                 {(winner || hasDraw) && <GameOver winner={winner} onRestart={handleGameRestart}/>}
                 {/* <GameBoard onSelectSquare={handleSelectSquare} activePlayerSymbol={activePlayer}/> */}

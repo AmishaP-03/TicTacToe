@@ -1,11 +1,18 @@
 import { useState } from "react"
 
-export default function Player({initialName, symbol, isActive}) {
+export default function Player({initialName, symbol, isActive, onNameChange}) {
+    // We do not want to lift this state up to App component because each time a player name is edited/saved, the whole App component will get executed which is unnecessary and unintended.
+    // Also, Player component is being used twice in App component and every Player component should manage its own data (name etc).
     const [isEditing, setIsEditing] = useState(false);
     const [currentPlayerName, setPlayerName] = useState(initialName);
 
     function handleEditButtonClick() {
         setIsEditing(editing => !editing);
+
+        // If isEditing is true, it means we have just clicked the button to stop editing and save. It is when we want to store the given name
+        if (isEditing) {
+            onNameChange(symbol, currentPlayerName);
+        }
     }
 
     // React gives us an event object as argument when onChange is triggered
